@@ -1,0 +1,32 @@
+.faq-item {
+  list-style-type: none;
+  margin-bottom: 25px;
+}
+.faq-question {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #94a3b8;
+}
+.faq-answer {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #007bff;
+}
+
+@media screen and (min-width: 768px) {
+  .faq-question {
+    font-size: 16px;
+    line-height: 32px;
+  }
+  .faq-answer {
+    font-size: 16px;
+    line-height: 32px;
+    color: #007bff;
+  }
+}
