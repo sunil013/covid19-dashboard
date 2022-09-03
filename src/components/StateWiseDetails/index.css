@@ -1,0 +1,107 @@
+.state-wise-route {
+  background: #161625;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.state-wise-body-container {
+  width: 90%;
+  max-width: 1146px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 25px;
+}
+.loader-container {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.state-name-tested-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+.state-name-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  width: 156px;
+  height: 32px;
+  background: rgba(2, 132, 199, 0.16);
+  border-radius: 16px;
+}
+.state-name {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #0ea5e9;
+  margin: 0px;
+}
+.state-updated-date {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #cbd5e1;
+}
+.state-tested-name {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #94a3b8;
+  margin: 0px;
+}
+.state-tested-count {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: right;
+  color: #94a3b8;
+  margin-top: 5px;
+}
+.state-tested-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+@media screen and (min-width: 768px) {
+  .state-name-box {
+    border-radius: 32px;
+    width: 300px;
+    height: 64px;
+  }
+  .state-name {
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 48px;
+  }
+  .state-updated-date {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .state-tested-name {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .state-tested-count {
+    font-size: 24px;
+    line-height: 24px;
+  }
+}

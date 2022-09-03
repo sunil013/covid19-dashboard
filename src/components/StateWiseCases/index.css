@@ -1,0 +1,91 @@
+.state-wide-container {
+  padding-left: 0px;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.state-wide-card {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  padding: 10px 20px 10px 20px;
+}
+.state-card-heading {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+.state-wide-card-images {
+  width: 24px;
+  height: 24px;
+}
+.state-card-count {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+.state-confirmed-card {
+  color: #ff073a;
+}
+.state-active-card {
+  color: #007bff;
+}
+.state-recovered-card {
+  color: #28a745;
+}
+.state-deceased-card {
+  color: #6c757d;
+}
+.confirmed-active {
+  background: #331427;
+}
+.active-active {
+  background: #132240;
+}
+.recovered-active {
+  background: #182829;
+}
+.deceased-active {
+  background: #212230;
+}
+
+@media screen and (max-width: 500px) {
+  .state-wide-card {
+    width: 40%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .state-card-heading {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .state-wide-card-images {
+    width: 38px;
+    height: 38px;
+  }
+  .state-card-count {
+    font-size: 24px;
+    line-height: 24px;
+  }
+  .state-wide-container {
+    margin-top: 30px;
+  }
+  .state-wide-card {
+    border-radius: 12px;
+    width: 180px;
+    padding: 10px 30px 10px 30px;
+  }
+}

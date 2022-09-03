@@ -1,6 +1,10 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
+import {BsSearch} from 'react-icons/bs'
+import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
+import TableStateItem from '../TableStateItem'
 import Header from '../Header'
+import Footer from '../Footer'
 import './index.css'
 
 const statesList = [
@@ -154,8 +158,14 @@ const statesList = [
   },
 ]
 
+const apiStatus = {
+  initial: 'INITIAL',
+  in_progress: 'IN_PROGRESS',
+  success: 'SUCCESS',
+}
+
 class Home extends Component {
-  state = {allStatesList: []}
+  state = {allStatesList: [], activeTab: apiStatus.in_progress}
 
   componentDidMount() {
     this.getAllStatesData()
@@ -192,6 +202,9 @@ class Home extends Component {
   }
 
   getAllStatesData = async () => {
+    this.setState({
+      activeTab: apiStatus.in_progress,
+    })
     const url = 'https://apis.ccbp.in/covid19-state-wise-data'
     const options = {
       method: 'GET',
@@ -201,32 +214,146 @@ class Home extends Component {
     const updatedData = this.convertObjectsIntoList(fetchedData)
     this.setState({
       allStatesList: updatedData,
+      activeTab: apiStatus.success,
     })
   }
 
   renderLoader = () => (
     <div className="loader-container">
-      <Loader type="TailSpin" color="#0b69ff" height="50" width="50" />
+      <Loader type="TailSpin" color="#007BFF" height="50" width="50" />
     </div>
   )
 
-  //   renderStatusCounts = () =>{
-  //       const {allStatesList} = this.state
-  //       return(
-  //           <ul className="status-count-container">
+  renderTableHeader = () => (
+    <div className="table-header">
+      <div className="state-order-container">
+        <p className="state-header-name">States/UT</p>
+        <button type="button" className="sorting-button">
+          <FcGenericSortingAsc className="sorting-icon" />
+        </button>
+        <button type="button" className="sorting-button">
+          <FcGenericSortingDesc className="sorting-icon" />
+        </button>
+      </div>
+      <p className="table-heading-text">Confirmed</p>
+      <p className="table-heading-text">Active</p>
+      <p className="table-heading-text">Recovered</p>
+      <p className="table-heading-text">Deceased</p>
+      <p className="table-heading-text">Population</p>
+    </div>
+  )
 
-  //           </ul>
-  //       )
-  //   }
+  renderAllStatesData = () => {
+    const {allStatesList} = this.state
+    return (
+      <div className="home-table-container">
+        <div className="all-states-table">
+          {this.renderTableHeader()}
+          <ul className="table-all-states-container">
+            {allStatesList.map(state => (
+              <TableStateItem key={state.stateCode} stateDetails={state} />
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
+  renderSearchBox = () => (
+    <div className="search-box">
+      <BsSearch className="search-icon" />
+      <input
+        type="search"
+        placeholder="Enter the State"
+        className="search-input"
+      />
+    </div>
+  )
+
+  renderAllSatesCount = () => {
+    const {allStatesList} = this.state
+    //  let confirmedCases = 0
+    //  let activeCases = 0
+    //  let recoveredCases = 0
+    //  let deceasedCases = 0
+    const totalConfirmedList = allStatesList.map(state => state.confirmed)
+    const confirmedCases = totalConfirmedList.reduce((pre, next) => pre + next)
+    const totalActiveCases = allStatesList.map(state => state.active)
+    const activeCases = totalActiveCases.reduce((pre, next) => pre + next)
+    const totalRecoveredCases = allStatesList.map(state => state.recovered)
+    const recoveredCases = totalRecoveredCases.reduce((pre, next) => pre + next)
+    const totalDeceasedCases = allStatesList.map(state => state.deceased)
+    const deceasedCases = totalDeceasedCases.reduce((pre, next) => pre + next)
+
+    return (
+      <ul className="country-wide-container">
+        <li className="country-wide-card">
+          <p className="country-card-heading confirmed-card">Confirmed</p>
+          <img
+            src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/active-image_o47crj.png"
+            alt="country wide confirmed cases pic"
+            className="country-wide-card-images"
+          />
+          <p className="card-count confirmed-card">{confirmedCases}</p>
+        </li>
+        <li className="country-wide-card">
+          <p className="country-card-heading active-card">Active</p>
+          <img
+            src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/protection_2_3x_m6bon4.png"
+            alt="country wide active cases pic"
+            className="country-wide-card-images"
+          />
+          <p className="card-count active-card">{activeCases}</p>
+        </li>
+        <li className="country-wide-card">
+          <p className="country-card-heading recovered-card">Recovered</p>
+          <img
+            src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/recovered_1_3x_qixkz3.png"
+            alt="country wide recovered cases pic"
+            className="country-wide-card-images"
+          />
+          <p className="card-count recovered-card">{recoveredCases}</p>
+        </li>
+        <li className="country-wide-card">
+          <p className="country-card-heading deceased-card">Deceased</p>
+          <img
+            src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/deceased-image_rxgj4x.png"
+            alt="country wide deceased cases pic"
+            className="country-wide-card-images"
+          />
+          <p className="card-count deceased-card">{deceasedCases}</p>
+        </li>
+      </ul>
+    )
+  }
+
+  renderSuccessTab = () => (
+    <>
+      {this.renderSearchBox()}
+      {this.renderAllSatesCount()}
+      {this.renderAllStatesData()}
+      <Footer />
+    </>
+  )
+
+  renderActiveTab = () => {
+    const {activeTab} = this.state
+    switch (activeTab) {
+      case apiStatus.in_progress:
+        return this.renderLoader()
+      case apiStatus.success:
+        return this.renderSuccessTab()
+      default:
+        return null
+    }
+  }
 
   render() {
     return (
       <>
         <Header />
         <div className="home-route">
-          <div className="home-body-container">
-            <h1>hello</h1>
-          </div>
+          <div className="home-body-container">{this.renderActiveTab()}</div>
         </div>
       </>
     )

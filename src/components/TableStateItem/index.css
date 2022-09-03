@@ -1,0 +1,42 @@
+.each-state-item {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.each-state-name {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  width: 220px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #f1f5f9;
+}
+.state-item-counts {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: right;
+  width: 160px;
+}
+.confirmed-count {
+  color: #ff073a;
+}
+.active-count {
+  color: #007bff;
+}
+.recovered-count {
+  color: #28a745;
+}
+.deceased-count {
+  color: #6c757d;
+}
+.population-count {
+  color: #94a3b8;
+}

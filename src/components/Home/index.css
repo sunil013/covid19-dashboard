@@ -8,4 +8,199 @@
 .home-body-container {
   width: 90%;
   max-width: 1146px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 25px;
+}
+.search-box {
+  width: 90%;
+  max-width: 824px;
+  height: 40px;
+  background: #2f2f43;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.search-icon {
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+  margin-right: 8px;
+}
+.search-input {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #94a3b8;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  flex-grow: 1;
+}
+.country-wide-container {
+  padding-left: 0px;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.country-wide-card {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px 10px 20px;
+}
+.country-card-heading {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+.country-wide-card-images {
+  width: 24px;
+  height: 24px;
+}
+.card-count {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+.confirmed-card {
+  color: #ff073a;
+}
+.active-card {
+  color: #007bff;
+}
+.recovered-card {
+  color: #28a745;
+}
+.deceased-card {
+  color: #6c757d;
+}
+.all-states-table {
+  width: 1146px;
+  background: #1e1e30;
+  border: 1px solid #475569;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 12px;
+}
+.table-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-bottom: 1px solid #475569;
+}
+.state-order-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 220px;
+}
+.state-header-name {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f8fafc;
+}
+.sorting-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  margin-left: 10px;
+}
+.sorting-icon {
+  width: 20px;
+  height: 20px;
+  color: #94a3b8;
+}
+
+.table-heading-text {
+  width: 160px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f8fafc;
+  text-align: end;
+}
+.table-all-states-container {
+  padding-left: 0px;
+}
+.home-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+.loader-container {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 500px) {
+  .country-wide-card {
+    width: 40%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .search-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  .search-input {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .search-box {
+    height: 50px;
+    padding-left: 20px;
+    padding-right: 15px;
+  }
+  .home-body-container {
+    padding-top: 32px;
+  }
+  .country-card-heading {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .country-wide-card-images {
+    width: 38px;
+    height: 38px;
+  }
+  .card-count {
+    font-size: 24px;
+    line-height: 24px;
+  }
+  .country-wide-container {
+    margin-top: 30px;
+  }
+  .home-table-container {
+    margin-top: 10px;
+  }
 }
