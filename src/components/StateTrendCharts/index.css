@@ -1,0 +1,76 @@
+.trend-charts-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.trend-heading {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  color: #cbd5e1;
+  text-align: center;
+}
+.trend-text {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  margin: 0px;
+  text-align: end;
+}
+.trend-container {
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+.confirmed-trend {
+  background: #331427;
+}
+.confirmed-text {
+  color: #ff073a;
+}
+.active-trend {
+  background: #132240;
+}
+.active-text {
+  color: #007bff;
+}
+.recovered-trend {
+  background: #182829;
+}
+.recovered-text {
+  color: #27a243;
+}
+.deceased-trend {
+  background: #1c1c2b;
+}
+.deceased-text {
+  color: #6c757d;
+}
+.tested-trend {
+  background: #230f41;
+}
+.tested-text {
+  color: #9673b9;
+}
+
+@media screen and (min-width: 768px) {
+  .trend-heading {
+    font-size: 32px;
+    text-align: start;
+    line-height: 48px;
+    color: #cbd5e1;
+  }
+  .trend-text {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .trend-container {
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+}

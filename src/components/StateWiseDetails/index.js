@@ -1,9 +1,12 @@
 import {Component} from 'react'
 
 import Loader from 'react-loader-spinner'
+
 import Header from '../Header'
 import Footer from '../Footer'
 import StateWiseCases from '../StateWiseCases'
+import StateBarChart from '../StateBarChart'
+import StateTrendCharts from '../StateTrendCharts'
 import './index.css'
 
 const statesList = [
@@ -175,6 +178,24 @@ class StateWiseDetails extends Component {
     this.getStateDetails()
   }
 
+  //   convertObjectsIntoList = data => {
+  //     const resultList = []
+  //     const keyNames = Object.keys(data)
+  //     keyNames.forEach(keyName => {
+  //       if (data[keyName]) {
+  //         const {dates} = data[keyName]
+  //         const distDate = Object.keys(dates)
+  //         const graphsData = distDate.map(date => ({
+  //         confirmed = date.total.confirmed ? total.confirmed : 0
+  //         resultList.push({
+  //           name: keyName,
+  //           confirmed,
+  //         })
+  //       }
+  //     })
+  //     return resultList
+  //   }
+
   getStateDetails = async () => {
     this.setState({
       activeTab: apiStatus.in_progress,
@@ -217,7 +238,16 @@ class StateWiseDetails extends Component {
       deceased: fetchedData[stateCode].dates[date].total.deceased,
       recovered: fetchedData[stateCode].dates[date].total.recovered,
       tested: fetchedData[stateCode].dates[date].total.tested,
+      active:
+        fetchedData[stateCode].dates[date].total.confirmed -
+        (fetchedData[stateCode].dates[date].total.deceased +
+          fetchedData[stateCode].dates[date].total.recovered),
     }))
+    // console.log(fetchedData[stateCode].districts)
+    const {districts} = fetchedData[stateCode]
+    // const districtNames = Object.keys(fetchedData[stateCode].districts)
+    const districtData = this.convertObjectsIntoList(districts)
+
     this.setState({
       activeTab: apiStatus.success,
       stateCasesDetails: stateCaseDetails,
@@ -260,8 +290,37 @@ class StateWiseDetails extends Component {
     )
   }
 
+  //   dataFormatter = number => {
+  //     if (number > 1000) {
+  //       return `${(number / 1000).toString()}k`
+  //     }
+  //     return number.toString()
+  //   }
+
+  //   renderBarChart = () => {
+  //     const {statesDatesDetails, activeCasesItem} = this.state
+  //     const dataLength = statesDatesDetails.length
+  //     const updatedArray = statesDatesDetails.slice(dataLength - 10, dataLength)
+  //     const itemLower = activeCasesItem.toLocaleLowerCase()
+  //     return (
+  //       <BarChart width={1146} height={400} data={updatedArray}>
+  //         {/* <CartesianGrid strokeDasharray="" /> */}
+  //         <XAxis dataKey="date" />
+  //         {/* <YAxis tickFormatter={this.DataFormatter} /> */}
+  //         <Tooltip wrapperStyle={{width: 100, backgroundColor: '#ccc'}} />
+  //         <Bar
+  //           barSize={60}
+  //           dataKey={itemLower}
+  //           fill="#8884d8"
+  //           className="bar"
+  //           label={{position: 'top', color: 'yellow'}}
+  //         />
+  //       </BarChart>
+  //     )
+  //   }
+
   renderSuccessTab = () => {
-    const {stateCasesDetails, activeCasesItem} = this.state
+    const {stateCasesDetails, activeCasesItem, statesDatesDetails} = this.state
     return (
       <>
         {this.renderNameAndTested()}
@@ -270,6 +329,13 @@ class StateWiseDetails extends Component {
           activeCasesItem={activeCasesItem}
           onChangeCaseItem={this.onChangeCaseItem}
         />
+        <div className="bar-container">
+          <StateBarChart
+            statesDatesDetails={statesDatesDetails}
+            activeCasesItem={activeCasesItem}
+          />
+        </div>
+        <StateTrendCharts statesDatesDetails={statesDatesDetails} />
         <Footer />
       </>
     )
