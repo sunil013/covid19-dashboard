@@ -40,9 +40,29 @@
   margin: 10px 15px 10px 15px;
   color: #f8fafc;
 }
+.link-style {
+  text-decoration: none;
+}
+.mobile-head-icon {
+  width: 30px;
+  height: 30px;
+  color: #ffffff;
+}
+.mobile-head-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 575px) {
   .desktop-nav-container {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .mobile-head-button {
     display: none;
   }
 }

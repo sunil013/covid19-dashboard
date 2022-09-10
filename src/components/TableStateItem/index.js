@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 import './index.css'
 
 const TableStateItem = props => {
@@ -13,7 +14,9 @@ const TableStateItem = props => {
   } = stateDetails
   return (
     <li className="each-state-item">
-      <p className="each-state-name">{name}</p>
+      <Link to={`/state/${stateCode}`} className="state-link">
+        <p className="each-state-name">{name}</p>
+      </Link>
       <p className="state-item-counts confirmed-count">{confirmed}</p>
       <p className="state-item-counts active-count">{active}</p>
       <p className="state-item-counts recovered-count">{recovered}</p>

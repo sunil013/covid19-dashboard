@@ -7,6 +7,7 @@ import Footer from '../Footer'
 import StateWiseCases from '../StateWiseCases'
 import StateBarChart from '../StateBarChart'
 import StateTrendCharts from '../StateTrendCharts'
+import StateDistrictsData from '../StateDistrictsData'
 import './index.css'
 
 const statesList = [
@@ -142,10 +143,10 @@ const statesList = [
     state_code: 'TR',
     state_name: 'Tripura',
   },
-  {
-    state_code: 'TT',
-    state_name: 'TT',
-  },
+  //   {
+  //     state_code: 'TT',
+  //     state_name: 'TT',
+  //   },
   {
     state_code: 'UP',
     state_name: 'Uttar Pradesh',
@@ -170,31 +171,57 @@ class StateWiseDetails extends Component {
   state = {
     activeTab: apiStatus.initial,
     stateCasesDetails: {},
-    statesDatesDetails: [],
+    stateCode: '',
     activeCasesItem: 'CONFIRMED',
+    statesDatesDetails: [],
+    districtsList: [],
   }
 
   componentDidMount() {
     this.getStateDetails()
   }
 
-  //   convertObjectsIntoList = data => {
-  //     const resultList = []
-  //     const keyNames = Object.keys(data)
-  //     keyNames.forEach(keyName => {
-  //       if (data[keyName]) {
-  //         const {dates} = data[keyName]
-  //         const distDate = Object.keys(dates)
-  //         const graphsData = distDate.map(date => ({
-  //         confirmed = date.total.confirmed ? total.confirmed : 0
-  //         resultList.push({
-  //           name: keyName,
-  //           confirmed,
-  //         })
-  //       }
-  //     })
-  //     return resultList
-  //   }
+  convertObjectsIntoList = data => {
+    const resultList = []
+    const keyNames = Object.keys(data)
+    keyNames.forEach(keyName => {
+      if (data[keyName]) {
+        const {dates} = data[keyName]
+        const distDates = Object.keys(dates)
+        let totalConfirmed = 0
+        let totalActive = 0
+        let totalRecovered = 0
+        let totalDeceased = 0
+        distDates.forEach(date => {
+          if (dates[date]) {
+            const {total} = dates[date]
+            const confirmed = total.confirmed ? total.confirmed : 0
+            const active = total.active ? total.active : 0
+            const recovered = total.recovered ? total.recovered : 0
+            const deceased = total.deceased ? total.deceased : 0
+            totalConfirmed += confirmed
+            totalActive += active
+            totalRecovered += recovered
+            totalDeceased += deceased
+          }
+        })
+        // const districtsData = distDates.map(date => {
+        //   console.log(date)
+        //   const finalConfirmed = date.total.confirmed ? date.total.confirmed : 0
+        //   confirmed += finalConfirmed
+        //   return confirmed
+        // })
+        resultList.push({
+          name: keyName,
+          confirmed: totalConfirmed,
+          active: totalActive,
+          recovered: totalRecovered,
+          deceased: totalDeceased,
+        })
+      }
+    })
+    return resultList
+  }
 
   getStateDetails = async () => {
     this.setState({
@@ -212,7 +239,7 @@ class StateWiseDetails extends Component {
     const stateResponse = await countryResponse.json()
     // console.log(stateResponse[stateCode].districts)
 
-    const {total} = stateResponse[stateCode]
+    const {total, meta} = stateResponse[stateCode]
     const confirmed = total.confirmed ? total.confirmed : 0
     const deceased = total.deceased ? total.deceased : 0
     const recovered = total.recovered ? total.recovered : 0
@@ -224,12 +251,13 @@ class StateWiseDetails extends Component {
       deceased,
       recovered,
       tested,
+      lastUpdated: meta.last_updated,
       active: confirmed - (deceased + recovered),
     }
 
     const response = await fetch(url, options)
     const fetchedData = await response.json()
-    // console.log(fetchedData[stateCode].dates)
+    console.log(fetchedData)
     const keyNames = Object.keys(fetchedData[stateCode].dates)
 
     const graphsData = keyNames.map(date => ({
@@ -247,11 +275,16 @@ class StateWiseDetails extends Component {
     const {districts} = fetchedData[stateCode]
     // const districtNames = Object.keys(fetchedData[stateCode].districts)
     const districtData = this.convertObjectsIntoList(districts)
+    // const timeUrl = `https://apis.ccbp.in/covid19-timelines-data/${stateCode}`
+    // const timeResponse = await fetch(timeUrl, options)
+    // const timeLinesData = await timeResponse.json()
 
     this.setState({
       activeTab: apiStatus.success,
       stateCasesDetails: stateCaseDetails,
       statesDatesDetails: graphsData,
+      stateCode,
+      districtsList: districtData,
     })
   }
 
@@ -262,14 +295,20 @@ class StateWiseDetails extends Component {
   }
 
   renderLoader = () => (
-    <div className="loader-container">
+    <div className="loader-container" testid="stateDetailsLoader">
       <Loader type="TailSpin" color="#007BFF" height="50" width="50" />
     </div>
   )
 
   renderNameAndTested = () => {
     const {stateCasesDetails} = this.state
-    const {name, tested} = stateCasesDetails
+    const {name, tested, lastUpdated} = stateCasesDetails
+    const latestDate = new Date(lastUpdated)
+    const updatedDate = `${latestDate.toLocaleString('default', {
+      month: 'long',
+    })} ${latestDate.toLocaleString('default', {
+      day: '2-digit',
+    })} ${latestDate.toLocaleString('default', {year: 'numeric'})}`
     return (
       <>
         <div className="state-name-tested-container">
@@ -277,9 +316,7 @@ class StateWiseDetails extends Component {
             <div className="state-name-box">
               <p className="state-name">{name}</p>
             </div>
-            <p className="state-updated-date">
-              Last update on march 28th 2021.
-            </p>
+            <p className="state-updated-date">Last update on {updatedDate}.</p>
           </div>
           <div className="state-tested-container">
             <p className="state-tested-name">Tested</p>
@@ -290,37 +327,37 @@ class StateWiseDetails extends Component {
     )
   }
 
-  //   dataFormatter = number => {
-  //     if (number > 1000) {
-  //       return `${(number / 1000).toString()}k`
-  //     }
-  //     return number.toString()
-  //   }
-
-  //   renderBarChart = () => {
-  //     const {statesDatesDetails, activeCasesItem} = this.state
-  //     const dataLength = statesDatesDetails.length
-  //     const updatedArray = statesDatesDetails.slice(dataLength - 10, dataLength)
-  //     const itemLower = activeCasesItem.toLocaleLowerCase()
+  //   renderDistrictsData = () => {
+  //     const {districtsList, activeCasesItem} = this.state
+  //     const activeName = activeCasesItem.toLowerCase()
+  //     console.log(activeName)
+  //     // districtsList.sort((a, b) => b.confirmed - a.confirmed)
+  //     districtsList.sort((a, b) => b[activeName] - a[activeName])
+  //     const updatedDistricts = districtsList.slice(0, 20)
+  //     console.log(updatedDistricts)
   //     return (
-  //       <BarChart width={1146} height={400} data={updatedArray}>
-  //         {/* <CartesianGrid strokeDasharray="" /> */}
-  //         <XAxis dataKey="date" />
-  //         {/* <YAxis tickFormatter={this.DataFormatter} /> */}
-  //         <Tooltip wrapperStyle={{width: 100, backgroundColor: '#ccc'}} />
-  //         <Bar
-  //           barSize={60}
-  //           dataKey={itemLower}
-  //           fill="#8884d8"
-  //           className="bar"
-  //           label={{position: 'top', color: 'yellow'}}
-  //         />
-  //       </BarChart>
+  //       <div className="top-districts-container">
+  //         <h1 className="district-heading">Top Districts</h1>
+  //         <ul className="districts-list" testid="topDistrictsUnorderedList">
+  //           {updatedDistricts.map(district => (
+  //             <li className="district-item" key={district.name}>
+  //               <p className="district-count">{district[activeName]}</p>
+  //               <p className="district-name">{district.name}</p>
+  //             </li>
+  //           ))}
+  //         </ul>
+  //       </div>
   //     )
   //   }
 
   renderSuccessTab = () => {
-    const {stateCasesDetails, activeCasesItem, statesDatesDetails} = this.state
+    const {
+      stateCasesDetails,
+      statesDatesDetails,
+      activeCasesItem,
+      stateCode,
+      districtsList,
+    } = this.state
     return (
       <>
         {this.renderNameAndTested()}
@@ -329,13 +366,19 @@ class StateWiseDetails extends Component {
           activeCasesItem={activeCasesItem}
           onChangeCaseItem={this.onChangeCaseItem}
         />
+        {/* {this.renderDistrictsData()} */}
+        <StateDistrictsData
+          districtsList={districtsList}
+          activeCasesItem={activeCasesItem}
+        />
         <div className="bar-container">
           <StateBarChart
             statesDatesDetails={statesDatesDetails}
             activeCasesItem={activeCasesItem}
           />
         </div>
-        <StateTrendCharts statesDatesDetails={statesDatesDetails} />
+        <StateTrendCharts stateCode={stateCode} />
+        {/* <ChartsData stateCode={stateCode} category={activeCasesItem} /> */}
         <Footer />
       </>
     )

@@ -60,6 +60,9 @@
   max-width: 400px;
   margin-bottom: 15px;
 }
+.not-button-link {
+  text-decoration: none;
+}
 
 @media screen and (min-width: 768px) {
   .not-found-head {

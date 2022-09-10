@@ -40,3 +40,6 @@
 .population-count {
   color: #94a3b8;
 }
+.state-link {
+  text-decoration: none;
+}

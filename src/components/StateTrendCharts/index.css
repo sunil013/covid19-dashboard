@@ -25,6 +25,7 @@
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 15px;
+  overflow-x: auto;
 }
 .confirmed-trend {
   background: #331427;

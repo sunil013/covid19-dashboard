@@ -1,29 +1,88 @@
-import {
-  LineChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Line,
-} from 'recharts'
+import {Component} from 'react'
+import Loader from 'react-loader-spinner'
+import {LineChart, XAxis, YAxis, Tooltip, Line} from 'recharts'
 import './index.css'
 
-const StateTrendCharts = props => {
-  const {statesDatesDetails} = props
-  const dataFormatter = number => {
-    if (number > 1000) {
-      return `${Math.ceil(number / 1000).toString()}k`
-    }
-    return number.toString()
+const apiConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  in_progress: 'IN_PROGRESS',
+}
+
+class StateTrendCharts extends Component {
+  state = {statesDatesDetails: [], activeTab: apiConstants.initial}
+  //   const {statesDatesDetails} = props
+
+  componentDidMount() {
+    this.getTimeLinesData()
   }
-  return (
-    <div className="trend-charts-container">
-      <h1 className="trend-heading">Daily Spread Trends</h1>
-      <div className="confirmed-trend trend-container">
-        <p className="confirmed-text trend-text">Confirmed</p>
-        <ResponsiveContainer width="100%" height={280}>
+
+  getTimeLinesData = async () => {
+    this.setState({
+      activeTab: apiConstants.in_progress,
+    })
+    const {stateCode} = this.props
+    console.log(stateCode)
+    const url = `https://apis.ccbp.in/covid19-timelines-data/${stateCode}`
+    const options = {
+      method: 'GET',
+    }
+
+    const response = await fetch(url, options)
+    const fetchedData = await response.json()
+    const keyNames = Object.keys(fetchedData[stateCode].dates)
+
+    const graphsData = keyNames.map(date => ({
+      date,
+      confirmed: fetchedData[stateCode].dates[date].total.confirmed,
+      deceased: fetchedData[stateCode].dates[date].total.deceased,
+      recovered: fetchedData[stateCode].dates[date].total.recovered,
+      tested: fetchedData[stateCode].dates[date].total.tested,
+      active:
+        fetchedData[stateCode].dates[date].total.confirmed -
+        (fetchedData[stateCode].dates[date].total.deceased +
+          fetchedData[stateCode].dates[date].total.recovered),
+    }))
+    this.setState({
+      statesDatesDetails: graphsData,
+      activeTab: apiConstants.success,
+    })
+  }
+
+  dataFormatter = number => {
+    let result
+    if (number > 100000) {
+      result = `${Math.ceil(number / 100000).toString()}L`
+    } else if (number > 1000) {
+      result = `${Math.ceil(number / 1000).toString()}k`
+    } else {
+      result = number.toString()
+    }
+    return result
+  }
+
+  renderLoadingView = () => (
+    <div
+      className="products-details-loader-container"
+      testid="timelinesDataLoader"
+    >
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  renderSuccessTab = () => {
+    const {statesDatesDetails} = this.state
+
+    return (
+      <div className="trend-charts-container" testid="lineChartsContainer">
+        <h1 className="trend-heading">Daily Spread Trends</h1>
+        <div className="confirmed-trend trend-container">
+          <p className="confirmed-text trend-text">Confirmed</p>
+          {/* <ResponsiveContainer width="100%" height={280}> */}
           <LineChart
             data={statesDatesDetails}
+            height={280}
+            width={1070}
             // margin={{top: 5, right: 30, left: 20, bottom: 5}}
           >
             {/* <CartesianGrid strokeDasharray="3 3" /> */}
@@ -35,7 +94,7 @@ const StateTrendCharts = props => {
               stroke="#FF073A"
             />
             <YAxis
-              tickFormatter={dataFormatter}
+              tickFormatter={this.dataFormatter}
               tick={{stroke: '#FF073A', strokeWidth: 1}}
               tickMargin={10}
               tickCount={5}
@@ -51,13 +110,15 @@ const StateTrendCharts = props => {
               fill="#FF073A"
             />
           </LineChart>
-        </ResponsiveContainer>
-      </div>
-      <div className="active-trend trend-container">
-        <p className="active-text trend-text">Total Active</p>
-        <ResponsiveContainer width="100%" height={280}>
+          {/* </ResponsiveContainer> */}
+        </div>
+        <div className="active-trend trend-container">
+          <p className="active-text trend-text">Total Active</p>
+          {/* <ResponsiveContainer width="100%" height={280}> */}
           <LineChart
             data={statesDatesDetails}
+            height={280}
+            width={1070}
             // margin={{top: 5, right: 30, left: 20, bottom: 5}}
           >
             {/* <CartesianGrid strokeDasharray="3 3" /> */}
@@ -69,7 +130,7 @@ const StateTrendCharts = props => {
               stroke="#007BFF"
             />
             <YAxis
-              tickFormatter={dataFormatter}
+              tickFormatter={this.dataFormatter}
               tick={{stroke: '#007BFF', strokeWidth: 1}}
               tickMargin={10}
               tickCount={5}
@@ -85,13 +146,15 @@ const StateTrendCharts = props => {
               fill="#007BFF"
             />
           </LineChart>
-        </ResponsiveContainer>
-      </div>
-      <div className="recovered-trend trend-container">
-        <p className="recovered-text trend-text">Recovered</p>
-        <ResponsiveContainer width="100%" height={280}>
+          {/* </ResponsiveContainer> */}
+        </div>
+        <div className="recovered-trend trend-container">
+          <p className="recovered-text trend-text">Recovered</p>
+          {/* <ResponsiveContainer width="100%" height={280}> */}
           <LineChart
             data={statesDatesDetails}
+            height={280}
+            width={1070}
             // margin={{top: 5, right: 30, left: 20, bottom: 5}}
           >
             {/* <CartesianGrid strokeDasharray="3 3" /> */}
@@ -103,7 +166,7 @@ const StateTrendCharts = props => {
               stroke="#27A243"
             />
             <YAxis
-              tickFormatter={dataFormatter}
+              tickFormatter={this.dataFormatter}
               tick={{stroke: '#27A243', strokeWidth: 1}}
               tickMargin={10}
               tickCount={5}
@@ -119,13 +182,15 @@ const StateTrendCharts = props => {
               fill="#27A243"
             />
           </LineChart>
-        </ResponsiveContainer>
-      </div>
-      <div className="deceased-trend trend-container">
-        <p className="deceased-text trend-text">Deceased</p>
-        <ResponsiveContainer width="100%" height={280}>
+          {/* </ResponsiveContainer> */}
+        </div>
+        <div className="deceased-trend trend-container">
+          <p className="deceased-text trend-text">Deceased</p>
+          {/* <ResponsiveContainer width="100%" height={280}> */}
           <LineChart
             data={statesDatesDetails}
+            height={280}
+            width={1070}
             // margin={{top: 5, right: 30, left: 20, bottom: 5}}
           >
             {/* <CartesianGrid strokeDasharray="3 3" /> */}
@@ -137,7 +202,7 @@ const StateTrendCharts = props => {
               stroke="#6C757D"
             />
             <YAxis
-              tickFormatter={dataFormatter}
+              tickFormatter={this.dataFormatter}
               tick={{stroke: '#6C757D', strokeWidth: 1}}
               tickMargin={10}
               tickCount={5}
@@ -153,13 +218,15 @@ const StateTrendCharts = props => {
               fill="#6C757D"
             />
           </LineChart>
-        </ResponsiveContainer>
-      </div>
-      <div className="tested-trend trend-container">
-        <p className="tested-text trend-text">Tested</p>
-        <ResponsiveContainer width="100%" height={280}>
+          {/* </ResponsiveContainer> */}
+        </div>
+        <div className="tested-trend trend-container">
+          <p className="tested-text trend-text">Tested</p>
+          {/* <ResponsiveContainer width="100%" height={280}> */}
           <LineChart
             data={statesDatesDetails}
+            height={280}
+            width={1070}
             // margin={{top: 5, right: 30, left: 20, bottom: 5}}
           >
             {/* <CartesianGrid strokeDasharray="3 3" /> */}
@@ -171,7 +238,7 @@ const StateTrendCharts = props => {
               stroke="#9673B9"
             />
             <YAxis
-              tickFormatter={dataFormatter}
+              tickFormatter={this.dataFormatter}
               tick={{stroke: '#9673B9', strokeWidth: 1}}
               tickMargin={10}
               tickCount={5}
@@ -187,10 +254,27 @@ const StateTrendCharts = props => {
               fill="#9673B9"
             />
           </LineChart>
-        </ResponsiveContainer>
+          {/* </ResponsiveContainer> */}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+
+  renderActiveTab = () => {
+    const {activeTab} = this.state
+    switch (activeTab) {
+      case apiConstants.in_progress:
+        return this.renderLoadingView()
+      case apiConstants.success:
+        return this.renderSuccessTab()
+      default:
+        return null
+    }
+  }
+
+  render() {
+    return <>{this.renderActiveTab()}</>
+  }
 }
 
 export default StateTrendCharts

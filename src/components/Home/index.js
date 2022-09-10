@@ -1,8 +1,12 @@
 import {Component} from 'react'
+// import {Link} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import {BsSearch} from 'react-icons/bs'
 import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
+// import {IoMdClose} from 'react-icons/io'
 import TableStateItem from '../TableStateItem'
+// import MobileMenuTab from '../MobileMenuTab'
+import SearchStateName from '../SearchStateName'
 import Header from '../Header'
 import Footer from '../Footer'
 import './index.css'
@@ -165,17 +169,30 @@ const apiStatus = {
 }
 
 class Home extends Component {
-  state = {allStatesList: [], activeTab: apiStatus.in_progress}
+  state = {
+    allStatesList: [],
+    searchInput: '',
+    activeTab: apiStatus.in_progress,
+    ascSort: false,
+    descSort: false,
+  }
 
   componentDidMount() {
     this.getAllStatesData()
   }
 
   convertObjectsIntoList = data => {
+    const {ascSort, descSort} = this.state
     const resultList = []
     const keyNames = Object.keys(data)
+    let updatedKeyNames = keyNames
+    if (ascSort === true) {
+      updatedKeyNames = keyNames.sort()
+    } else if (descSort === true) {
+      updatedKeyNames = keyNames.sort().reverse()
+    }
 
-    keyNames.forEach(keyName => {
+    updatedKeyNames.forEach(keyName => {
       if (data[keyName]) {
         const {total} = data[keyName]
         const confirmed = total.confirmed ? total.confirmed : 0
@@ -201,6 +218,34 @@ class Home extends Component {
     return resultList
   }
 
+  onAscendingSort = () => {
+    const {ascSort} = this.state
+    if (ascSort === false) {
+      this.setState({
+        ascSort: true,
+        descSort: false,
+      })
+    } else {
+      this.setState({
+        ascSort: false,
+      })
+    }
+  }
+
+  onDescendingSort = () => {
+    const {descSort} = this.state
+    if (descSort === false) {
+      this.setState({
+        descSort: true,
+        ascSort: false,
+      })
+    } else {
+      this.setState({
+        descSort: false,
+      })
+    }
+  }
+
   getAllStatesData = async () => {
     this.setState({
       activeTab: apiStatus.in_progress,
@@ -218,8 +263,26 @@ class Home extends Component {
     })
   }
 
+  //   onClickMenuIcon = () => {
+  //     this.setState({
+  //       showNavbar: true,
+  //     })
+  //   }
+
+  //   onClickMenuCloseIcon = () => {
+  //     this.setState({
+  //       showNavbar: false,
+  //     })
+  //   }
+
+  onChangeSearchInput = event => {
+    this.setState({
+      searchInput: event.target.value,
+    })
+  }
+
   renderLoader = () => (
-    <div className="loader-container">
+    <div className="loader-container" testid="homeRouteLoader">
       <Loader type="TailSpin" color="#007BFF" height="50" width="50" />
     </div>
   )
@@ -228,10 +291,20 @@ class Home extends Component {
     <div className="table-header">
       <div className="state-order-container">
         <p className="state-header-name">States/UT</p>
-        <button type="button" className="sorting-button">
+        <button
+          type="button"
+          className="sorting-button"
+          onClick={this.onAscendingSort}
+          testid="ascendingSort"
+        >
           <FcGenericSortingAsc className="sorting-icon" />
         </button>
-        <button type="button" className="sorting-button">
+        <button
+          type="button"
+          className="sorting-button"
+          onClick={this.onDescendingSort}
+          testid="descendingSort"
+        >
           <FcGenericSortingDesc className="sorting-icon" />
         </button>
       </div>
@@ -243,14 +316,44 @@ class Home extends Component {
     </div>
   )
 
+  //   renderNavigationTab = () => (
+  //     <MobileMenuTab onClickMenuCloseIcon={this.onClickMenuCloseIcon} />
+  //   )
+
+  sortingStatesList = data => {
+    const {ascSort, descSort} = this.state
+    let resultList = []
+    if (ascSort) {
+      const updatedList = data.sort((a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+      )
+      resultList = updatedList
+    } else if (descSort) {
+      const descList = data.sort((a, b) =>
+        b.name.toLowerCase().localeCompare(a.name.toLowerCase()),
+      )
+      resultList = descList
+    } else {
+      resultList = data
+    }
+    return resultList
+  }
+
   renderAllStatesData = () => {
     const {allStatesList} = this.state
+    const updatedStatesList = allStatesList.filter(
+      state => state.stateCode !== 'TT',
+    )
+    this.sortingStatesList(updatedStatesList)
     return (
       <div className="home-table-container">
-        <div className="all-states-table">
+        <div className="all-states-table" testid="stateWiseCovidDataTable">
           {this.renderTableHeader()}
-          <ul className="table-all-states-container">
-            {allStatesList.map(state => (
+          <ul
+            className="table-all-states-container"
+            testid="searchResultsUnorderedList"
+          >
+            {updatedStatesList.map(state => (
               <TableStateItem key={state.stateCode} stateDetails={state} />
             ))}
           </ul>
@@ -259,23 +362,24 @@ class Home extends Component {
     )
   }
 
-  renderSearchBox = () => (
-    <div className="search-box">
-      <BsSearch className="search-icon" />
-      <input
-        type="search"
-        placeholder="Enter the State"
-        className="search-input"
-      />
-    </div>
-  )
+  renderSearchBox = () => {
+    const {searchInput} = this.state
+    return (
+      <div className="search-box">
+        <BsSearch className="search-icon" />
+        <input
+          type="search"
+          placeholder="Enter the State"
+          className="search-input"
+          value={searchInput}
+          onChange={this.onChangeSearchInput}
+        />
+      </div>
+    )
+  }
 
   renderAllSatesCount = () => {
     const {allStatesList} = this.state
-    //  let confirmedCases = 0
-    //  let activeCases = 0
-    //  let recoveredCases = 0
-    //  let deceasedCases = 0
     const totalConfirmedList = allStatesList.map(state => state.confirmed)
     const confirmedCases = totalConfirmedList.reduce((pre, next) => pre + next)
     const totalActiveCases = allStatesList.map(state => state.active)
@@ -287,7 +391,7 @@ class Home extends Component {
 
     return (
       <ul className="country-wide-container">
-        <li className="country-wide-card">
+        <li className="country-wide-card" testid="countryWideConfirmedCases">
           <p className="country-card-heading confirmed-card">Confirmed</p>
           <img
             src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/active-image_o47crj.png"
@@ -296,7 +400,7 @@ class Home extends Component {
           />
           <p className="card-count confirmed-card">{confirmedCases}</p>
         </li>
-        <li className="country-wide-card">
+        <li className="country-wide-card" testid="countryWideActiveCases">
           <p className="country-card-heading active-card">Active</p>
           <img
             src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/protection_2_3x_m6bon4.png"
@@ -305,7 +409,7 @@ class Home extends Component {
           />
           <p className="card-count active-card">{activeCases}</p>
         </li>
-        <li className="country-wide-card">
+        <li className="country-wide-card" testid="countryWideRecoveredCases">
           <p className="country-card-heading recovered-card">Recovered</p>
           <img
             src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/recovered_1_3x_qixkz3.png"
@@ -314,7 +418,7 @@ class Home extends Component {
           />
           <p className="card-count recovered-card">{recoveredCases}</p>
         </li>
-        <li className="country-wide-card">
+        <li className="country-wide-card" testid="countryWideDeceasedCases">
           <p className="country-card-heading deceased-card">Deceased</p>
           <img
             src="https://res.cloudinary.com/sunil013/image/upload/v1662178362/deceased-image_rxgj4x.png"
@@ -327,14 +431,43 @@ class Home extends Component {
     )
   }
 
-  renderSuccessTab = () => (
-    <>
-      {this.renderSearchBox()}
-      {this.renderAllSatesCount()}
-      {this.renderAllStatesData()}
-      <Footer />
-    </>
-  )
+  renderSearchList = () => {
+    const {searchInput} = this.state
+    const updatedSearch = searchInput.trim()
+    const updatedList = statesList.filter(state => state.state_code !== 'TT')
+    const filteredList = updatedList.filter(state =>
+      state.state_name.toLowerCase().includes(updatedSearch.toLowerCase()),
+    )
+    return (
+      <ul className="search-input-list" testid="searchResultsUnorderedList">
+        {filteredList.map(eachState => (
+          <SearchStateName
+            stateDetails={eachState}
+            key={eachState.state_code}
+          />
+        ))}
+      </ul>
+    )
+  }
+
+  renderSuccessTab = () => {
+    const {searchInput} = this.state
+    const updatedSearch = searchInput.trim()
+    return (
+      <>
+        {this.renderSearchBox()}
+        {updatedSearch.length > 0 ? (
+          this.renderSearchList()
+        ) : (
+          <>
+            {this.renderAllSatesCount()}
+            {this.renderAllStatesData()}
+            <Footer />
+          </>
+        )}
+      </>
+    )
+  }
 
   renderActiveTab = () => {
     const {activeTab} = this.state

@@ -1,4 +1,4 @@
-import {ResponsiveContainer, XAxis, LabelList, BarChart, Bar} from 'recharts'
+import {XAxis, LabelList, BarChart, Bar} from 'recharts'
 import './index.css'
 
 const StateBarChart = props => {
@@ -13,10 +13,15 @@ const StateBarChart = props => {
   }
   const itemLower = activeCasesItem.toLocaleLowerCase()
   const dataFormatter = number => {
-    if (number > 1000) {
-      return `${Math.ceil(number / 1000).toString()}k`
+    let result
+    if (number > 100000) {
+      result = `${Math.ceil(number / 100000).toString()}L`
+    } else if (number > 1000) {
+      result = `${Math.ceil(number / 1000).toString()}k`
+    } else {
+      result = number.toString()
     }
-    return number.toString()
+    return result
   }
   //   const updatedDate = new Date()
   //   const finalDate = `${updatedDate.toLocaleString('default', {
@@ -34,42 +39,42 @@ const StateBarChart = props => {
   }
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={updatedArray}>
-        <XAxis
-          dataKey="date"
-          axisLine={false}
-          tickFormatter={dateConverter}
-          tick={{
-            //   stroke: '#6c757d',
-            stroke: barColor[itemLower],
-            strokeWidth: 1,
-            fontSize: 15,
-            fontFamily: 'Roboto',
-          }}
-          // tick={{stroke: 'red', strokeWidth: 2}}
-        />
-        {/* <YAxis tickFormatter={this.DataFormatter} /> */}
-        {/* <Tooltip wrapperStyle={{width: 100, backgroundColor: '#ccc'}} /> */}
-        <Bar
-          dataKey={itemLower}
+    // <ResponsiveContainer width="100%" height="100%">
+    <BarChart data={updatedArray} width={1146} height={300}>
+      <XAxis
+        dataKey="date"
+        axisLine={false}
+        tickFormatter={dateConverter}
+        tick={{
+          //   stroke: '#6c757d',
+          stroke: barColor[itemLower],
+          strokeWidth: 1,
+          fontSize: 15,
+          fontFamily: 'Roboto',
+        }}
+        // tick={{stroke: 'red', strokeWidth: 2}}
+      />
+      {/* <YAxis tickFormatter={this.DataFormatter} /> */}
+      {/* <Tooltip wrapperStyle={{width: 100, backgroundColor: '#ccc'}} /> */}
+      <Bar
+        dataKey={itemLower}
+        fill={barColor[itemLower]}
+        className="bar"
+        radius={[8, 8, 0, 0]}
+        // barSize={60}
+        maxBarSize={60}
+        barCategoryGap="30%"
+        // label={{position: 'top', color: 'yellow'}}
+      >
+        <LabelList
+          position="top"
+          formatter={dataFormatter}
           fill={barColor[itemLower]}
-          className="bar"
-          radius={[8, 8, 0, 0]}
-          // barSize={60}
-          maxBarSize={60}
-          barCategoryGap="30%"
-          // label={{position: 'top', color: 'yellow'}}
-        >
-          <LabelList
-            position="top"
-            formatter={dataFormatter}
-            fill={barColor[itemLower]}
-            fontFamily="Roboto"
-          />
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+          fontFamily="Roboto"
+        />
+      </Bar>
+    </BarChart>
+    // </ResponsiveContainer>
   )
 }
 

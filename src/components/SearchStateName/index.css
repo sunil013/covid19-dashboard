@@ -1,0 +1,55 @@
+.search-state-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 10px 0px 10px 0px;
+  border-bottom: 0.3px solid #64748b;
+}
+.search-state-name {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #64748b;
+  margin: 0px;
+}
+.search-state-code {
+  font-family: 'HK Grotesk';
+  /* font-family: 'Roboto'; */
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #facc15;
+  margin: 0px;
+}
+.right-icon {
+  color: #facc15;
+  width: 15px;
+  height: 15px;
+  margin: 0px;
+  margin-left: 6px;
+}
+.search-state-button {
+  background-color: rgba(28, 212, 212, 0.16);
+  border-radius: 4px;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 5px 20px 5px 20px;
+  cursor: pointer;
+  outline: none;
+}
+
+@media screen and (min-width: 768px) {
+  .search-state-code {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .right-icon {
+    width: 18px;
+    height: 18px;
+  }
+}

@@ -160,6 +160,59 @@
   align-items: center;
   justify-content: center;
 }
+.mobile-nav-show {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 90%;
+  margin: auto;
+  padding-right: 10px;
+}
+.mobile-bar-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 0px;
+}
+.mobile-bar-item {
+  list-style-type: none;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  margin-right: 25px;
+  letter-spacing: -0.355556px;
+  color: #94a3b8;
+}
+.close-icon {
+  width: 16px;
+  height: 16px;
+}
+.close-button {
+  background-color: #f8fafc;
+  border: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.nav-tab-links {
+  text-decoration: none;
+}
+.search-input-list {
+  width: 90%;
+  max-width: 824px;
+  padding-left: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 @media screen and (max-width: 500px) {
   .country-wide-card {
