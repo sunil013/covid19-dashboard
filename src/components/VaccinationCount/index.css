@@ -1,0 +1,235 @@
+.site-images {
+  width: 24px;
+  height: 24px;
+}
+.sites-container-list {
+  background-color: #2f2f43;
+  border-radius: 12px;
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px 10px 10px 20px;
+  margin-bottom: 15px;
+}
+.doses-container {
+  display: flex;
+  align-items: center;
+  margin-top: 0px;
+  padding: 0px;
+}
+.sites-heading {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #cbd5e1;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.sites-count {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
+  margin-bottom: 0px;
+  margin-top: 7px;
+}
+.dose-head {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #cbd5e1;
+  margin-bottom: 5px;
+}
+.dose-count {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #e2e8f0;
+  margin-top: 0px;
+}
+.dose-head-count {
+  margin-right: 20px;
+}
+.site-image-container {
+  background-color: #161625;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+.sites-list-containers {
+  width: 100%;
+  margin-top: 20px;
+}
+.pie-charts-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  background-color: #1c1c2b;
+  border-radius: 12px;
+}
+.vaccination-heading {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+.vaccination-age-container {
+  background: #1c1c2b;
+  border-radius: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  padding-bottom: 10px;
+}
+.vaccination-charts-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.vaccination-trend-container {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background-color: #1c1c2b;
+  /* max-height: 450px; */
+  padding: 10px;
+}
+.chert-list-container {
+  padding-left: 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.chart-list-item {
+  list-style-type: none;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  margin-right: 15px;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+}
+.top-name-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.top-home-image {
+  height: 24px;
+  width: 24px;
+  color: #cbd5e1;
+  margin-right: 10px;
+}
+.top-heading {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 32px;
+  color: #cbd5e1;
+}
+
+@media screen and (min-width: 768px) {
+  .sites-heading {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .sites-count {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .dose-head {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+  }
+  .dose-count {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .sites-container-list {
+    width: 49%;
+  }
+  .dose-head-count {
+    margin-right: 25px;
+  }
+  .sites-list-containers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .vaccination-heading {
+    font-size: 24px;
+    line-height: 24px;
+    text-align: left;
+    width: 80%;
+  }
+  .pie-charts-container {
+    width: 49%;
+  }
+  .vaccination-age-container {
+    width: 49%;
+    margin-top: 0px;
+    padding-bottom: 0px;
+  }
+  .vaccination-charts-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 22px;
+  }
+  .vaccination-trend-container {
+    padding: 10px 30px 30px 30px;
+  }
+  .chart-list-item {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    margin-right: 20px;
+  }
+  .top-home-image {
+    height: 32px;
+    width: 32px;
+    margin-right: 15px;
+  }
+  .top-heading {
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 48px;
+  }
+}
+
+.chart-active {
+  border-bottom: #ffffff solid 2px;
+}

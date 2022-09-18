@@ -22,7 +22,7 @@ class StateTrendCharts extends Component {
       activeTab: apiConstants.in_progress,
     })
     const {stateCode} = this.props
-    console.log(stateCode)
+    // console.log(stateCode)
     const url = `https://apis.ccbp.in/covid19-timelines-data/${stateCode}`
     const options = {
       method: 'GET',

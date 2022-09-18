@@ -37,6 +37,9 @@ class Header extends Component {
             <Link to="/" className="link-style">
               <li className="desktop-nav-item">Home</li>
             </Link>
+            <Link to="/vaccination" className="link-style">
+              <li className="desktop-nav-item">Vaccination</li>
+            </Link>
             <Link to="/about" className="link-style">
               <li className="desktop-nav-item">About</li>
             </Link>
@@ -54,6 +57,9 @@ class Header extends Component {
             <ul className="mobile-bar-list">
               <Link to="/" className="nav-tab-links">
                 <li className="mobile-bar-item">Home</li>
+              </Link>
+              <Link to="/vaccination" className="nav-tab-links">
+                <li className="mobile-bar-item">Vaccination</li>
               </Link>
               <Link to="/about" className="nav-tab-links">
                 <li className="mobile-bar-item">About</li>

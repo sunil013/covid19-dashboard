@@ -8,6 +8,7 @@ import StateWiseCases from '../StateWiseCases'
 import StateBarChart from '../StateBarChart'
 import StateTrendCharts from '../StateTrendCharts'
 import StateDistrictsData from '../StateDistrictsData'
+import StateImage from '../StateImage'
 import './index.css'
 
 const statesList = [
@@ -237,6 +238,7 @@ class StateWiseDetails extends Component {
     }
     const countryResponse = await fetch(urlCountry, options)
     const stateResponse = await countryResponse.json()
+    // console.log(stateResponse)
     // console.log(stateResponse[stateCode].districts)
 
     const {total, meta} = stateResponse[stateCode]
@@ -244,6 +246,7 @@ class StateWiseDetails extends Component {
     const deceased = total.deceased ? total.deceased : 0
     const recovered = total.recovered ? total.recovered : 0
     const tested = total.tested ? total.tested : 0
+    const population = meta.population ? meta.population : 0
     const stateCaseDetails = {
       stateCode,
       name: statesList.find(state => state.state_code === stateCode).state_name,
@@ -251,13 +254,13 @@ class StateWiseDetails extends Component {
       deceased,
       recovered,
       tested,
+      population,
       lastUpdated: meta.last_updated,
       active: confirmed - (deceased + recovered),
     }
 
     const response = await fetch(url, options)
     const fetchedData = await response.json()
-    console.log(fetchedData)
     const keyNames = Object.keys(fetchedData[stateCode].dates)
 
     const graphsData = keyNames.map(date => ({
@@ -278,7 +281,7 @@ class StateWiseDetails extends Component {
     // const timeUrl = `https://apis.ccbp.in/covid19-timelines-data/${stateCode}`
     // const timeResponse = await fetch(timeUrl, options)
     // const timeLinesData = await timeResponse.json()
-
+    // console.log(stateCaseDetails)
     this.setState({
       activeTab: apiStatus.success,
       stateCasesDetails: stateCaseDetails,
@@ -367,6 +370,7 @@ class StateWiseDetails extends Component {
           onChangeCaseItem={this.onChangeCaseItem}
         />
         {/* {this.renderDistrictsData()} */}
+        <StateImage stateDetails={stateCasesDetails} />
         <StateDistrictsData
           districtsList={districtsList}
           activeCasesItem={activeCasesItem}
