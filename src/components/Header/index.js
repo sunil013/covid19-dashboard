@@ -25,6 +25,10 @@ class Header extends Component {
 
   render() {
     const {showNavbar} = this.state
+    const pathName = window.location.pathname
+    const homeClass = pathName === '/' ? 'menu-active' : ''
+    const aboutClass = pathName === '/about' ? 'menu-active' : ''
+    const vaccinationClass = pathName === '/vaccination' ? 'menu-active' : ''
     return (
       <nav className="navbar">
         <div className="navbar-content-container">
@@ -35,13 +39,15 @@ class Header extends Component {
           </Link>
           <ul className="desktop-nav-container">
             <Link to="/" className="link-style">
-              <li className="desktop-nav-item">Home</li>
+              <li className={`desktop-nav-item ${homeClass}`}>Home</li>
             </Link>
             <Link to="/vaccination" className="link-style">
-              <li className="desktop-nav-item">Vaccination</li>
+              <li className={`desktop-nav-item ${vaccinationClass}`}>
+                Vaccination
+              </li>
             </Link>
             <Link to="/about" className="link-style">
-              <li className="desktop-nav-item">About</li>
+              <li className={`desktop-nav-item ${aboutClass}`}>About</li>
             </Link>
           </ul>
           <button
@@ -56,13 +62,15 @@ class Header extends Component {
           <div className="mobile-nav-show">
             <ul className="mobile-bar-list">
               <Link to="/" className="nav-tab-links">
-                <li className="mobile-bar-item">Home</li>
+                <li className={`mobile-bar-item ${homeClass}`}>Home</li>
               </Link>
               <Link to="/vaccination" className="nav-tab-links">
-                <li className="mobile-bar-item">Vaccination</li>
+                <li className={`mobile-bar-item ${vaccinationClass}`}>
+                  Vaccination
+                </li>
               </Link>
               <Link to="/about" className="nav-tab-links">
-                <li className="mobile-bar-item">About</li>
+                <li className={`mobile-bar-item ${aboutClass}`}>About</li>
               </Link>
             </ul>
             <button

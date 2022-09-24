@@ -38,7 +38,7 @@
   font-size: 16px;
   line-height: 24px;
   margin: 10px 15px 10px 15px;
-  color: #f8fafc;
+  color: #94a3b8;
 }
 .link-style {
   text-decoration: none;
@@ -53,6 +53,17 @@
   border: none;
   cursor: pointer;
   outline: none;
+}
+.mobile-bar-item {
+  list-style-type: none;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  margin-right: 25px;
+  letter-spacing: -0.355556px;
+  color: #94a3b8;
 }
 
 @media screen and (max-width: 575px) {
@@ -72,4 +83,8 @@
     font-size: 20px;
     line-height: 24px;
   }
+}
+
+.menu-active {
+  color: #f8fafc;
 }
